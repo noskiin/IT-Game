@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ObjectsDatabaseBuildModeResource" format=3 uid="uid://4hqnr2mre7os"]
+
+[ext_resource type="Resource" uid="uid://dlgia0h0dffcn" path="res://Chair.tres" id="1_e3d26"]
+[ext_resource type="Script" uid="uid://j6jgkct7bj0t" path="res://Scripts/GridBuilding/ObjectsDatabaseBuildModeResource.cs" id="1_lkrr7"]
+
+[resource]
+script = ExtResource("1_lkrr7")
+objectsData = Array[Object]([ExtResource("1_e3d26")])
+metadata/_custom_type_script = "uid://j6jgkct7bj0t"

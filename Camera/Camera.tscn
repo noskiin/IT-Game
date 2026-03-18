@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dcwcrsw3ytjf"]
+
+[ext_resource type="Script" uid="uid://db3j8mpqf4b6" path="res://Camera/CameraControll.cs" id="1_npc1t"]
+
+[node name="Node3D" type="Node3D" unique_id=633361174]
+script = ExtResource("1_npc1t")
+
+[node name="PlayerCamera" type="Camera3D" parent="." unique_id=710085860]
+fov = 70.0

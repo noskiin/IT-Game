@@ -1,0 +1,192 @@
+[gd_scene format=3 uid="uid://bqf0r0iafidid"]
+
+[ext_resource type="Script" uid="uid://b1vaq76lgyhap" path="res://Scripts/GameMaster.cs" id="1_043dk"]
+[ext_resource type="Script" uid="uid://db3j8mpqf4b6" path="res://Camera/CameraControll.cs" id="1_yioc5"]
+[ext_resource type="Script" uid="uid://c1043jy6m8cdj" path="res://Scripts/GridBuilding/VirtualGrid.cs" id="3_4nvd0"]
+[ext_resource type="Shader" uid="uid://lo31lwn2xe6h" path="res://Shaders/GridVisualisationShader.tres" id="3_s8sog"]
+[ext_resource type="Script" uid="uid://cniq3noc2sehh" path="res://Scripts/GridBuilding/PlacementSystem.cs" id="4_s3x7n"]
+[ext_resource type="Script" uid="uid://sdnr2xli4gtv" path="res://Scripts/GridBuilding/GridShaderSync.cs" id="4_t6s24"]
+[ext_resource type="Script" uid="uid://c43h8x0j0we01" path="res://Scripts/Player/Player_Movement.cs" id="6_5vceo"]
+[ext_resource type="Resource" uid="uid://4hqnr2mre7os" path="res://BuildModeDatabase.tres" id="6_irt28"]
+[ext_resource type="Script" uid="uid://s5lu2ojp4hct" path="res://Scripts/GridBuilding/BuildModeControls.cs" id="6_s8sog"]
+[ext_resource type="Script" uid="uid://h0vkg84a4lpt" path="res://Scripts/GridBuilding/PreviewPlacement.cs" id="8_83rc6"]
+[ext_resource type="PackedScene" uid="uid://baq8inmsrssl2" path="res://mesh_instance_3d.tscn" id="9_83rc6"]
+[ext_resource type="Script" uid="uid://bosf7myw50gx8" path="res://Scripts/GridBuilding/GridBuildingSystem.cs" id="10_0td81"]
+[ext_resource type="PackedScene" uid="uid://1jsgs05hq8pp" path="res://Scripts/UI/button.tscn" id="10_qoapl"]
+[ext_resource type="Script" uid="uid://d0jdd3ajlddob" path="res://Scripts/UI/UIBuildModeFiller.cs" id="11_0td81"]
+[ext_resource type="PackedScene" uid="uid://cmje43tk01c4j" path="res://InteractionButton.tscn" id="15_snnhc"]
+[ext_resource type="Script" uid="uid://mpu7fersd276" path="res://RadialMenu.cs" id="16_qytfr"]
+[ext_resource type="Script" uid="uid://8ajhet0hqvwn" path="res://Scripts/Player/PlayerInputHandling.cs" id="16_snnhc"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_5vceo"]
+vertices = PackedVector3Array(-22.25, 0.45, -17.25, -22.25, 0.45, 17.25, 22.25, 0.45, 17.25, 22.25, 0.45, -17.25)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+sample_partition_type = 1
+geometry_parsed_geometry_type = 0
+geometry_source_geometry_mode = 2
+geometry_source_group_name = &"Bake"
+agent_radius = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_y0sjb"]
+size = Vector3(45, 0.1, 35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_043dk"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_irt28"]
+size = Vector2(45, 35)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_irt28"]
+render_priority = 0
+shader = ExtResource("3_s8sog")
+shader_parameter/ColorParameter = Color(0.32017782, 0.6248232, 1, 0.011764706)
+shader_parameter/Thickness = 0.04
+shader_parameter/Scale = Vector3(2, 2, 2)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_i2wo5"]
+data = PackedVector3Array(-22.5, 0.049999997, 17.5, 22.5, 0.049999997, 17.5, -22.5, -0.049999997, 17.5, 22.5, 0.049999997, 17.5, 22.5, -0.049999997, 17.5, -22.5, -0.049999997, 17.5, 22.5, 0.049999997, -17.5, -22.5, 0.049999997, -17.5, 22.5, -0.049999997, -17.5, -22.5, 0.049999997, -17.5, -22.5, -0.049999997, -17.5, 22.5, -0.049999997, -17.5, 22.5, 0.049999997, 17.5, 22.5, 0.049999997, -17.5, 22.5, -0.049999997, 17.5, 22.5, 0.049999997, -17.5, 22.5, -0.049999997, -17.5, 22.5, -0.049999997, 17.5, -22.5, 0.049999997, -17.5, -22.5, 0.049999997, 17.5, -22.5, -0.049999997, -17.5, -22.5, 0.049999997, 17.5, -22.5, -0.049999997, 17.5, -22.5, -0.049999997, -17.5, 22.5, 0.049999997, 17.5, -22.5, 0.049999997, 17.5, 22.5, 0.049999997, -17.5, -22.5, 0.049999997, 17.5, -22.5, 0.049999997, -17.5, 22.5, 0.049999997, -17.5, -22.5, -0.049999997, 17.5, 22.5, -0.049999997, 17.5, -22.5, -0.049999997, -17.5, 22.5, -0.049999997, 17.5, 22.5, -0.049999997, -17.5, -22.5, -0.049999997, -17.5)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4xowi"]
+radius = 0.54
+height = 3.0181885
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0dap6"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.6313726)
+
+[node name="TestScena" type="Node3D" unique_id=1214693018]
+script = ExtResource("1_043dk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1528964189]
+transform = Transform3D(-0.014194266, -0.25881904, 0.9658216, -0.003803342, 0.9659258, 0.25879112, -0.9998921, 0, -0.014694986, 8.744629, 3.8137817, -1.7741318)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1030342038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.081421, 3.1391602, 0)
+size = Vector3(1.142334, 6.366455, 5.2509766)
+
+[node name="Node3D" type="Node3D" parent="." unique_id=1759686387 node_paths=PackedStringArray("Target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2592773, 0)
+script = ExtResource("1_yioc5")
+Target = NodePath("../Player")
+
+[node name="PlayerCamera" type="Camera3D" parent="Node3D" unique_id=1563038766]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.8069763, 1.7781372, 1.0056458)
+fov = 95.0
+size = 22.173
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2024757580]
+collision_layer = 9
+collision_mask = 9
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="StaticBody3D" unique_id=275931037]
+top_level = true
+navigation_mesh = SubResource("NavigationMesh_5vceo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/NavigationRegion3D" unique_id=1143120103 groups=["Bake"]]
+mesh = SubResource("BoxMesh_y0sjb")
+surface_material_override/0 = SubResource("StandardMaterial3D_043dk")
+
+[node name="GridVisualisation" type="MeshInstance3D" parent="StaticBody3D/NavigationRegion3D/MeshInstance3D" unique_id=561566253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065468855, 0)
+visible = false
+mesh = SubResource("PlaneMesh_irt28")
+surface_material_override/0 = SubResource("ShaderMaterial_irt28")
+
+[node name="VirtualGrid" type="Node" parent="StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation" unique_id=946428655]
+script = ExtResource("3_4nvd0")
+
+[node name="GridShaderSync" type="Node" parent="StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation" unique_id=1038079523 node_paths=PackedStringArray("LogicGrid", "GridVisualizer")]
+script = ExtResource("4_t6s24")
+LogicGrid = NodePath("../VirtualGrid")
+GridVisualizer = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=90282495]
+shape = SubResource("ConcavePolygonShape3D_i2wo5")
+debug_color = Color(0, 0.6, 0.7019608, 0.41960785)
+
+[node name="Player" type="RigidBody3D" parent="." unique_id=1491881803]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16501427, 5.521515)
+disable_mode = 2
+collision_layer = 0
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+can_sleep = false
+
+[node name="Collision Shape" type="CollisionShape3D" parent="Player" unique_id=885605583]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_4xowi")
+
+[node name="CharacterModel" type="CSGCylinder3D" parent="Player" unique_id=1565322991]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.0016345978, 0)
+
+[node name="Pivot" type="Node" parent="Player" unique_id=2000758889]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Player" unique_id=408513974]
+path_desired_distance = 0.1
+target_desired_distance = 0.1
+avoidance_enabled = true
+use_3d_avoidance = true
+avoidance_layers = 0
+avoidance_mask = 0
+
+[node name="NavigationAgentNode" type="Node" parent="Player/NavigationAgent3D" unique_id=239197609 node_paths=PackedStringArray("_playerInputHandling", "_navigationAgent3D", "Player")]
+script = ExtResource("6_5vceo")
+_playerInputHandling = NodePath("../../../PlayerInputHandler")
+_navigationAgent3D = NodePath("..")
+Player = NodePath("../..")
+Speed = 3.5
+
+[node name="PlacementSystem" type="Node" parent="." unique_id=1524998440 node_paths=PackedStringArray("m_NavMeshSurface", "gridVisualisation", "previewSystem", "grid")]
+script = ExtResource("4_s3x7n")
+m_BuildModeSO = ExtResource("6_irt28")
+m_NavMeshSurface = NodePath("../StaticBody3D/NavigationRegion3D")
+gridVisualisation = NodePath("../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation")
+previewSystem = NodePath("PreviewPlacement")
+grid = NodePath("../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation/VirtualGrid")
+
+[node name="BuidlingModeInputHandler" type="Node" parent="PlacementSystem" unique_id=1588807825]
+script = ExtResource("6_s8sog")
+
+[node name="PreviewPlacement" type="Node" parent="PlacementSystem" unique_id=369341851]
+script = ExtResource("8_83rc6")
+cellIndicator = ExtResource("9_83rc6")
+previewMaterialPrefab = SubResource("StandardMaterial3D_0dap6")
+
+[node name="GridBuildingSystem" type="Node" parent="PlacementSystem" unique_id=383304648 node_paths=PackedStringArray("grid")]
+script = ExtResource("10_0td81")
+grid = NodePath("../../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation/VirtualGrid")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=387267208 node_paths=PackedStringArray("buildModeContent", "PlacementSys")]
+script = ExtResource("11_0td81")
+buildModeContent = NodePath("Control/GridContainer")
+database = ExtResource("6_irt28")
+buttonPrefab = ExtResource("10_qoapl")
+PlacementSys = NodePath("../PlacementSystem")
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=2029947916]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1052.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control" unique_id=1905402633]
+clip_contents = true
+layout_mode = 0
+offset_right = 500.0
+offset_bottom = 100.0
+
+[node name="Button" parent="CanvasLayer/Control/GridContainer" unique_id=1205407721 instance=ExtResource("15_snnhc")]
+layout_mode = 2
+
+[node name="InteractionButtonHolder" type="Node" parent="CanvasLayer" unique_id=1461763978]
+script = ExtResource("16_qytfr")
+
+[node name="PlayerInputHandler" type="Node" parent="." unique_id=1784643148 node_paths=PackedStringArray("cam", "Player")]
+script = ExtResource("16_snnhc")
+cam = NodePath("../Node3D/PlayerCamera")
+Player = NodePath("../Player")
+interactionButton = ExtResource("15_snnhc")
+
+[node name="InteractionOptionsButtonHolder" type="Node" parent="PlayerInputHandler" unique_id=1669005727]

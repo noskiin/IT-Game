@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cmje43tk01c4j"]
+
+[node name="Button" type="Button" unique_id=1205407721]
+custom_minimum_size = Vector2(100, 25)
+action_mode = 0
+text = "Exit
+"

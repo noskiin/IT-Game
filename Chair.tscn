@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://rjxfksnvca1s"]
+
+[ext_resource type="Script" uid="uid://cisxtargq18xt" path="res://Scripts/ObjectInteraction/ObjectInteraction.cs" id="1_n1mr4"]
+[ext_resource type="Script" uid="uid://bfwlw7qd3w2en" path="res://Scripts/ObjectInteraction/Objects/Chair.cs" id="2_kh1t1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ks1na"]
+size = Vector3(1.2, 2.0089111, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ks1na"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n1mr4"]
+
+[node name="Chair" type="Node3D" unique_id=2071996932 groups=["Bake", "Interactable"]]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1833915811 groups=["Bake", "Interactable"]]
+collision_mask = 0
+script = ExtResource("1_n1mr4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=169256284 groups=["Bake", "Interactable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50445557, 0)
+shape = SubResource("BoxShape3D_ks1na")
+
+[node name="Interaction" type="Node" parent="StaticBody3D" unique_id=1521759081 groups=["Bake", "Interactable"]]
+script = ExtResource("2_kh1t1")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=270186400 groups=["Bake", "Interactable"]]
+mesh = SubResource("BoxMesh_ks1na")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D2" unique_id=1631734918 groups=["Bake", "Interactable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.19999999, 0, 1, -0.4)
+mesh = SubResource("BoxMesh_n1mr4")

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ObjectDataResource" format=3 uid="uid://dlgia0h0dffcn"]
+
+[ext_resource type="Script" uid="uid://bld5u74bq3bus" path="res://Scripts/GridBuilding/ObjectDataResource.cs" id="1_dxobi"]
+[ext_resource type="PackedScene" uid="uid://rjxfksnvca1s" path="res://Chair.tscn" id="1_paqh2"]
+
+[resource]
+script = ExtResource("1_dxobi")
+Name = "Chair"
+occupiedCells = Array[Vector2i]([Vector2i(0, 0)])
+Prefab = ExtResource("1_paqh2")
+Tag = "Floor"
+metadata/_custom_type_script = "uid://bld5u74bq3bus"
