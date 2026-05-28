@@ -65,7 +65,6 @@ public partial class RadialMenu : ObjectInteraction
 
 
 			var currentOption = options[i];
-		    // Kąt dla obecnego przycisku (0, 90, 180, 270 w radianach)
 			Buttons[i].Text = options[i].Label;
 			Buttons[i].Pressed += () => {
             if (currentOption.SubOptions != null && currentOption.SubOptions.Count > 0) 

@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://1jsgs05hq8pp" path="res://Scripts/UI/button.tscn" id="10_qoapl"]
 [ext_resource type="Script" uid="uid://d0jdd3ajlddob" path="res://Scripts/UI/UIBuildModeFiller.cs" id="11_0td81"]
 [ext_resource type="PackedScene" uid="uid://cmje43tk01c4j" path="res://InteractionButton.tscn" id="15_snnhc"]
-[ext_resource type="Script" uid="uid://mpu7fersd276" path="res://RadialMenu.cs" id="16_qytfr"]
+[ext_resource type="Script" uid="uid://mpu7fersd276" path="res://Scripts/ObjectInteraction/RadialMenu/RadialMenu.cs" id="16_qytfr"]
 [ext_resource type="Script" uid="uid://8ajhet0hqvwn" path="res://Scripts/Player/PlayerInputHandling.cs" id="16_snnhc"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_5vceo"]
