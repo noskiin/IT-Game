@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://b6tl1e2ylv4ta"]
+
+[ext_resource type="PackedScene" uid="uid://dnrusurcsjc3t" path="res://Models/Playtest_Desk.glb" id="1_kv1ut"]
+[ext_resource type="Shader" uid="uid://lo31lwn2xe6h" path="res://Shaders/GridVisualisationShader.tres" id="2_vypyt"]
+[ext_resource type="Script" uid="uid://c1043jy6m8cdj" path="res://Scripts/GridBuilding/VirtualGrid.cs" id="3_g3mx1"]
+[ext_resource type="Script" uid="uid://sdnr2xli4gtv" path="res://Scripts/GridBuilding/GridShaderSync.cs" id="4_b6rpr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0raqs"]
+size = Vector3(2.2060547, 1.3358154, 5.7246094)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_leq2l"]
+size = Vector2(45, 35)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gxqb5"]
+render_priority = 0
+shader = ExtResource("2_vypyt")
+shader_parameter/ColorParameter = Color(0.32017782, 0.6248232, 1, 0.011764706)
+shader_parameter/Thickness = 0.04
+shader_parameter/Scale = Vector3(0.1, 0.115, 2)
+
+[node name="Desk" type="Node3D" unique_id=1718996549]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+
+[node name="Playtest_Desk" parent="." unique_id=75207977 instance=ExtResource("1_kv1ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.875, 0, 0, 0)
+
+[node name="Interaction" type="Node" parent="Playtest_Desk" unique_id=937554304]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=955308049]
+collision_layer = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=440097390]
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0.3436889, 0)
+shape = SubResource("BoxShape3D_0raqs")
+
+[node name="GridVisualisation" type="MeshInstance3D" parent="StaticBody3D" unique_id=31388444]
+transform = Transform3D(0.045, 0, 0, 0, 0, 0, 0, 0, 0.157, 0.009, 0.935, -0.011)
+mesh = SubResource("PlaneMesh_leq2l")
+surface_material_override/0 = SubResource("ShaderMaterial_gxqb5")
+
+[node name="VirtualGrid" type="Node" parent="StaticBody3D/GridVisualisation" unique_id=518479512]
+script = ExtResource("3_g3mx1")
+CellSize = Vector3(1, 1, 1)
+
+[node name="GridShaderSync" type="Node" parent="StaticBody3D/GridVisualisation" unique_id=358500532 node_paths=PackedStringArray("LogicGrid", "GridVisualizer")]
+script = ExtResource("4_b6rpr")
+LogicGrid = NodePath("../VirtualGrid")
+GridVisualizer = NodePath("..")

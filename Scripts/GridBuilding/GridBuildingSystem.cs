@@ -13,6 +13,7 @@ public partial class GridBuildingSystem : Node
 
     private Vector3 lastPosition;
 
+	[Export]
     private uint mask = Layers.BuildingLayer;
 	[Export]
     private VirtualGrid grid;
@@ -56,19 +57,3 @@ public partial class GridBuildingSystem : Node
 
 }
 
-
-
-
-public static class Layers
-{
-    public const uint None = 0;
-    
-    // Zwróć uwagę: w kodzie liczymy od 0, więc Warstwa 1 w edytorze to bit 0!
-    // Literka 'u' oznacza, że to jest typ uint.
-    public const uint Player = 1u << 0;  // Warstwa 1 w edytorze
-    public const uint Enemy  = 1u << 1;  // Warstwa 2 w edytorze
-    public const uint Wall   = 1u << 2;  // Warstwa 3 w edytorze
-    public const uint BuildingLayer = 1u << 3;  // Warstwa 4 w edytorze
-    
-    public const uint All = ~0u;         // Skrót na "Wszystkie warstwy" (same jedynki)
-}

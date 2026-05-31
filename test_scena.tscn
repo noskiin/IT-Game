@@ -78,6 +78,7 @@ collision_layer = 9
 collision_mask = 9
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="StaticBody3D" unique_id=275931037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00012207031, 0, -1.5258789e-05)
 top_level = true
 navigation_mesh = SubResource("NavigationMesh_5vceo")
 
@@ -87,7 +88,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_043dk")
 
 [node name="GridVisualisation" type="MeshInstance3D" parent="StaticBody3D/NavigationRegion3D/MeshInstance3D" unique_id=561566253]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065468855, 0)
-visible = false
 mesh = SubResource("PlaneMesh_irt28")
 surface_material_override/0 = SubResource("ShaderMaterial_irt28")
 
@@ -135,13 +135,15 @@ _navigationAgent3D = NodePath("..")
 Player = NodePath("../..")
 Speed = 3.5
 
-[node name="PlacementSystem" type="Node" parent="." unique_id=1524998440 node_paths=PackedStringArray("m_NavMeshSurface", "gridVisualisation", "previewSystem", "grid")]
+[node name="PlacementSystem" type="Node" parent="." unique_id=1524998440 node_paths=PackedStringArray("_grid", "_buildingSystem", "_previewSystem", "_gridVisualisation", "_input", "NavMeshSurface")]
 script = ExtResource("4_s3x7n")
-m_BuildModeSO = ExtResource("6_irt28")
-m_NavMeshSurface = NodePath("../StaticBody3D/NavigationRegion3D")
-gridVisualisation = NodePath("../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation")
-previewSystem = NodePath("PreviewPlacement")
-grid = NodePath("../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation/VirtualGrid")
+_grid = NodePath("../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation/VirtualGrid")
+_buildingSystem = NodePath("GridBuildingSystem")
+_previewSystem = NodePath("PreviewPlacement")
+_buildModeSO = ExtResource("6_irt28")
+_gridVisualisation = NodePath("../StaticBody3D/NavigationRegion3D/MeshInstance3D/GridVisualisation")
+_input = NodePath("BuidlingModeInputHandler")
+NavMeshSurface = NodePath("../StaticBody3D/NavigationRegion3D")
 
 [node name="BuidlingModeInputHandler" type="Node" parent="PlacementSystem" unique_id=1588807825]
 script = ExtResource("6_s8sog")
