@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://rjxfksnvca1s"]
 
 [ext_resource type="Script" uid="uid://cisxtargq18xt" path="res://Scripts/ObjectInteraction/ObjectInteraction.cs" id="1_n1mr4"]
-[ext_resource type="Script" uid="uid://bfwlw7qd3w2en" path="res://Scripts/ObjectInteraction/Objects/Chair.cs" id="2_kh1t1"]
+[ext_resource type="Script" uid="uid://bfwlw7qd3w2en" path="res://Scripts/ObjectInteraction/Objects/ChairInteraction.cs" id="2_kh1t1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ks1na"]
 size = Vector3(1.2, 2.0089111, 1.2)

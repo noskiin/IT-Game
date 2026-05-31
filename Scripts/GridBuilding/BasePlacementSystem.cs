@@ -64,8 +64,6 @@ public abstract partial class BasePlacementSystem : Node
             lastDetectedPos = gridPos;
         }
 
-        if (Input.IsKeyPressed(keycode: Key.B))
-            DestroyObject();
 	}
     
 	public void StartPlacement(int ID)
@@ -96,7 +94,6 @@ public abstract partial class BasePlacementSystem : Node
             BuildModeSO.objectsData[selectedObjIndex]
             );
         OnClick += PlaceStructure;
-        OnClick -= DestroyObject;
         OnExit += StopPlacement;
         _input.RotatePressed += RotateGrid;
     }
@@ -167,7 +164,6 @@ public abstract partial class BasePlacementSystem : Node
         GridVisualisation.Visible = false;
         PreviewSystem.StopShowingPreview();
         OnClick -= PlaceStructure;
-        OnClick -= DestroyObject;
         OnExit -= StopPlacement;
         NavMeshSurface.BakeNavigationMesh(true);
         _input.RotatePressed -= RotateGrid;
@@ -203,9 +199,11 @@ public abstract partial class BasePlacementSystem : Node
         bool placementValidity = CheckPlacementValidity(pivotWorldCell, selectedObjIndex);
         PreviewSystem.UpdateRotation(Grid.GetCellCenterWorld(gridPos), BuildModeSO.objectsData[selectedObjIndex], pivot, placementValidity, rotation);
     }
-	private void DestroyObject()
-    {
-       //if()
+	private void _destroy_objects_mode_button()
+    {        
+        Vector3 MousePosi = BuildingSystem.GetMapPosition();
+        Vector3I gridPos = Grid.WorldToCell(MousePosi);
+
     }
 	
 }

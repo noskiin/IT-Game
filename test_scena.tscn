@@ -182,6 +182,11 @@ offset_bottom = 100.0
 [node name="Button" parent="CanvasLayer/Control/GridContainer" unique_id=1205407721 instance=ExtResource("15_snnhc")]
 layout_mode = 2
 
+[node name="Button2" type="Button" parent="CanvasLayer/Control/GridContainer" unique_id=1809894278]
+layout_mode = 2
+action_mode = 0
+text = "Delete Obj"
+
 [node name="InteractionButtonHolder" type="Node" parent="CanvasLayer" unique_id=1461763978]
 script = ExtResource("16_qytfr")
 

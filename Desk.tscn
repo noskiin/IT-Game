@@ -27,7 +27,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.875, 0, 0, 0)
 [node name="Interaction" type="Node" parent="Playtest_Desk" unique_id=937554304]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=955308049]
-collision_layer = 9
+collision_layer = 17
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=440097390]
 transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, 0.3436889, 0)
