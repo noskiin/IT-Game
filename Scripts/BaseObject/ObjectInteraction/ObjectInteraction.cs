@@ -60,6 +60,3 @@ public partial class ObjectInteraction : Node
 
 }
 
-
-
-//Po kliknięciu przycisku wyłączyć wszystkie

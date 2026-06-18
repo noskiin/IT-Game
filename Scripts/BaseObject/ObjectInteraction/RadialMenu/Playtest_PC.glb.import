@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cvu6phlem3klf"
-path="res://.godot/imported/Playtest_PC.glb-7de36aec7b7872d810f725dfcda0df38.scn"
+path="res://.godot/imported/Playtest_PC.glb-5201205b4e19db1aae964305abb8cf3e.scn"
 
 [deps]
 
-source_file="res://Scripts/ObjectInteraction/RadialMenu/Playtest_PC.glb"
-dest_files=["res://.godot/imported/Playtest_PC.glb-7de36aec7b7872d810f725dfcda0df38.scn"]
+source_file="res://Scripts/BaseObject/ObjectInteraction/RadialMenu/Playtest_PC.glb"
+dest_files=["res://.godot/imported/Playtest_PC.glb-5201205b4e19db1aae964305abb8cf3e.scn"]
 
 [params]
 

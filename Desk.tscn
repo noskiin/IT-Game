@@ -46,3 +46,11 @@ CellSize = Vector3(1, 1, 1)
 script = ExtResource("4_b6rpr")
 LogicGrid = NodePath("../VirtualGrid")
 GridVisualizer = NodePath("..")
+
+[node name="Other_Object_Interactrion_Positions" type="Node" parent="." unique_id=1072943015]
+
+[node name="PC_Position" type="Node3D" parent="Other_Object_Interactrion_Positions" unique_id=318106864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28015137, 0.2730255, 0)
+
+[node name="Chair_Position" type="Node3D" parent="Other_Object_Interactrion_Positions" unique_id=1967650923]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.50775146, 0, 0)

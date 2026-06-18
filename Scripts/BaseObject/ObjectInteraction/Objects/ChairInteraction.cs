@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 
 
-public partial class Chair : BaseInteractionClass
+public partial class ChairInteraction : IInteractable
 {
-	public override List<Interaction> GetInteractions()
+	public List<Interaction> GetInteractions()
 	{
 	    return new List<Interaction>
 	    {
