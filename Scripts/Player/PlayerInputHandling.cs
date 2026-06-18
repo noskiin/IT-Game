@@ -48,10 +48,6 @@ public partial class PlayerInputHandling : Node
 
 			ClickedOn(_dictionary);
 		}
-		else
-		{
-			
-		}
 
 	}
 }

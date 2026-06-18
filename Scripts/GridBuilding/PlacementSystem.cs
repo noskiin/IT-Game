@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 
 
-/*Musisz dodatkowo Stworzyć Skrypt Dla SetActive*/
 public partial class PlacementSystem : BasePlacementSystem
 {
     [Export] private VirtualGrid _grid;

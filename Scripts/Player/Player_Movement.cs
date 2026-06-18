@@ -55,11 +55,10 @@ public partial class Player_Movement : Node
 
 	private void OnVelocityComputed(Vector3 safeVelocity)
     {
-        // Tutaj nakładamy deltę, bo zmieniamy pozycję co klatkę
         float delta = (float)GetPhysicsProcessDeltaTime();
         Player.GlobalPosition = Player.GlobalPosition.MoveToward(Player.GlobalPosition + safeVelocity, Speed * delta);
         
-        // Opcjonalnie: Obracanie gracza w stronę ruchu
+        //Obracanie gracza w stronę ruchu
         if (safeVelocity.Length() > 0.1f)
         {
             Vector3 lookAtTarget = Player.GlobalPosition + safeVelocity;

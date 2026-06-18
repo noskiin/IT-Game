@@ -27,5 +27,5 @@ public static class Layers
     public const uint ObjectLayer = 1u << 4;  // Warstwa 5 w edytorze
 
     
-    public const uint All = ~0u;         // Skrót na "Wszystkie warstwy" (same jedynki)
+    public const uint All = ~0u;         // Skrót na "Wszystkie warstwy"
 }

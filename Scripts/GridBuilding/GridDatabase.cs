@@ -7,12 +7,12 @@ public partial class GridDatabase
 {
 	public Dictionary<Vector3I, PlacementData> placedObjects = new();
     public void AddObjectAt(
-        Vector3I gridPosition, // POZYCJA PIVOTU W �WIECIE (grid cell)
+        Vector3I gridPosition,
         int ID,
         int placedObjectIndeX,
         int mainObjectIndeX,
         Godot.Collections.Array<Vector2I> occupiedCells,
-        Vector2I pivot, // pivot w przestrzeni lokalnej kszta�tu (2D)
+        Vector2I pivot, // pivot w przestrzeni lokalnej ksztaltu (2D)
         int orientation) // 0..3 (North,East,South,West)
 
     {
@@ -26,8 +26,8 @@ public partial class GridDatabase
 
         }
 
-        //Przyklad wyciaganbia ddanych z tej bazy danych
-/*        foreach (var pos in placedObjects) { 
+        //Przyklad wyciaganbia ddanych z tej bazy danych zostawiony w razie w
+        /*        foreach (var pos in placedObjects) { 
             Debug.Log( "IndeX objektu w tej bazie danych to : " + pos.Value.placedObjectIndeX +", a IndeX obiektu to :" + pos.Value.mainObjectIndeX);
             Debug.Log(pos.Key);
         }*/
@@ -40,15 +40,15 @@ public partial class GridDatabase
         Godot.Collections.Array<Vector3I> returnVal = new();
         foreach (var pos in occupiedCells)
         {
-            // 1) Przesuni�cie punktu wzgl�dem pivotu (ustawiamy pivot jako punkt odniesienia)
-         //    Dzi�ki temu obracamy punkt wok� pivotu, a nie wok� (0,0).
+            // 1) Przesuniecie punktu wzgledem pivotu (ustawiamy pivot jako punkt odniesienia)
+         //    Dzieki temu obracamy punkt wokol pivotu, a nie wokol (0,0).
             Vector2I relative = pos - pivot;
-            // 2) Obr�t punktu RELATYWNEGO (teraz obracamy punkt wok� (0,0),
-            //    ale poniewa� wcze�niej odj�li�my pivot, to w rzeczywisto�ci
-            //    obracamy wok� pivotu).
+            // 2) Obrot punktu RELATYWNEGO (teraz obracamy punkt wokol (0,0),
+            //    ale poniewaz wczesniej odjelismy pivot, to w rzeczywistosci
+            //    obracamy wokol pivotu).
             Vector2I rotated = RotateVector(orientation,relative);
              // 3) Finalna pozycja w gridzie:
-        //    pivotWorldPosition + rotated -> da nam w�a�ciwe miejsce kafelka po obrocie.
+        //    pivotWorldPosition + rotated -> da nam wlasciowe miejsce kafelka po obrocie.
             Vector3I finalPos = gridPosition + new Vector3I(rotated.X,0,rotated.Y);
             returnVal.Add(finalPos);
         }
