@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 [GlobalClass]
 public partial class ObjectDataResource : Resource
@@ -11,7 +12,13 @@ public partial class ObjectDataResource : Resource
     public int ID { get;  set; }
 
     [Export]
+    public int Cost {get; set;}
+
+    [Export]
     public Godot.Collections.Array<Vector2I> occupiedCells { get; set; }
+    
+    [Export]
+    public Godot.Collections.Array<Vector2I> snapPointCells { get; set; } 
 
     public bool CustomShape;
 
@@ -22,5 +29,7 @@ public partial class ObjectDataResource : Resource
     public PackedScene Prefab { get;  set; }
 
     [Export]
-    public string Tag { get;  set; }
+    public Godot.Collections.Array<string> Tags { get;  set; }
+
+    
 }

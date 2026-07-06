@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ObjectDataResource" format=3 uid="uid://dlgia0h0dffcn"]
+
+[ext_resource type="PackedScene" uid="uid://rjxfksnvca1s" path="res://Objects/Chair.tscn" id="1_ciy43"]
+[ext_resource type="Script" uid="uid://bld5u74bq3bus" path="res://Scripts/BaseObject/ObjectDataResource.cs" id="2_ciy43"]
+
+[resource]
+script = ExtResource("2_ciy43")
+Name = "Chair"
+Cost = 100
+occupiedCells = Array[Vector2i]([Vector2i(0, 0)])
+snapPointCells = Array[Vector2i]([])
+Prefab = ExtResource("1_ciy43")
+Tags = Array[String](["Floor", "Usable"])
+metadata/_custom_type_script = "uid://bld5u74bq3bus"

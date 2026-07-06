@@ -27,6 +27,7 @@ public abstract partial class BasePlacementSystem : Node
         ObjectsInSceneData = new();
         ObjectsInSceneData.Add(new GridDatabase());
         ObjectsInSceneData.Add(new GridDatabase());
+
     }
 
 	protected Vector2I CalculatePivot(Godot.Collections.Array<Vector2I> occupiedCells)
@@ -130,21 +131,19 @@ public abstract partial class BasePlacementSystem : Node
         buildModeObject.Rotation = PreviewSystem.previewObj.GlobalRotation;
         placedGameObjects.Add(buildModeObject);
 
-        /*Dodanie postawionego obiektu do bazy danych postawionych juz obiektow - przechowuje :
-         * Ilosc kafelkow i miejsce kafelkow ktore zajmuje obiekt
-         * ID w bazie danych 
-         * ?????
-         * ID obiektu
-         
-        Sprawdzic po co jest count(Plik GridDatabase.cs) i jjak cos usunac
-         */
-        GridDatabase selectedData = objData.Tag == "Floor" ? ObjectsInSceneData[0] : ObjectsInSceneData[1];
+        GridDatabase selectedData = null;
+        foreach (var Tag in objData.Tags)
+        {
+            selectedData = Tag == "Floor" ? ObjectsInSceneData[0] : ObjectsInSceneData[1];
+            break; 
+        }
         selectedData.AddObjectAt(
             pivotWorldCell,
             objData.ID,
             placedGameObjects.Count,
             selectedObjIndex,
             objData.occupiedCells,
+            objData.snapPointCells,
             pivot,
             PreviewSystem.orientation);
             buildModeObject.SetMeta("ID",metaID);
@@ -153,7 +152,12 @@ public abstract partial class BasePlacementSystem : Node
 
 	private bool CheckPlacementValidity(Vector3I gridPos, int selectedObjIndex)
     {
-        GridDatabase selectedData = BuildModeSO.objectsData[selectedObjIndex].Tag == "Floor" ? ObjectsInSceneData[0] : ObjectsInSceneData[1];
+        GridDatabase selectedData = null;
+        foreach (var Tag in BuildModeSO.objectsData[selectedObjIndex].Tags)
+        {
+            selectedData = Tag == "Floor" ? ObjectsInSceneData[0] : ObjectsInSceneData[1];
+            break; 
+        }
         Godot.Collections.Array<Vector2I> occupiedCells = BuildModeSO.objectsData[selectedObjIndex].occupiedCells;
         Vector2I pivot = CalculatePivot(occupiedCells);
         return selectedData.CanPlaceObjectAt(gridPos, BuildModeSO.objectsData[selectedObjIndex].occupiedCells, pivot, PreviewSystem.orientation);

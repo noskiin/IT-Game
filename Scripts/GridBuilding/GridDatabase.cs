@@ -12,6 +12,7 @@ public partial class GridDatabase
         int placedObjectIndeX,
         int mainObjectIndeX,
         Godot.Collections.Array<Vector2I> occupiedCells,
+        Godot.Collections.Array<Vector2I> snapPointCells,
         Vector2I pivot, // pivot w przestrzeni lokalnej ksztaltu (2D)
         int orientation) // 0..3 (North,East,South,West)
 
@@ -55,6 +56,28 @@ public partial class GridDatabase
         return  returnVal;
     }
 
+    private Godot.Collections.Array<Vector3I> CalculatePositions_CustomShapes_SnapPoints(Vector3I gridPosition, Godot.Collections.Array<Vector2I> snapPoints, Vector2I pivot, int orientation)
+    {
+        
+        Godot.Collections.Array<Vector3I> returnVal = new();
+        foreach (var pos in snapPoints)
+        {
+            // 1) Przesuniecie punktu wzgledem pivotu (ustawiamy pivot jako punkt odniesienia)
+         //    Dzieki temu obracamy punkt wokol pivotu, a nie wokol (0,0).
+            Vector2I relative = pos - pivot;
+            // 2) Obrot punktu RELATYWNEGO (teraz obracamy punkt wokol (0,0),
+            //    ale poniewaz wczesniej odjelismy pivot, to w rzeczywistosci
+            //    obracamy wokol pivotu).
+            Vector2I rotated = RotateVector(orientation,relative);
+             // 3) Finalna pozycja w gridzie:
+        //    pivotWorldPosition + rotated -> da nam wlasciowe miejsce kafelka po obrocie.
+            Vector3I finalPos = gridPosition + new Vector3I(rotated.X,0,rotated.Y);
+            returnVal.Add(finalPos);
+        }
+        return  returnVal;
+    }
+
+
     private Vector2I RotateVector(int orientation, Vector2I offset)
     {
         switch (orientation)
@@ -76,6 +99,17 @@ public partial class GridDatabase
     public bool CanPlaceObjectAt(Vector3I gridPosition, Godot.Collections.Array<Vector2I> occupiedCells, Vector2I pivot, int orientation)
     {
         Godot.Collections.Array<Vector3I> positionToOccupy = CalculatePositions_CustomShapes(gridPosition,occupiedCells,pivot,orientation);
+        foreach (var pos in positionToOccupy)
+        {
+            if (placedObjects.ContainsKey(pos))
+                return false;
+        }
+        return true;
+    }
+
+    public bool IsAtSnapPointCell(Vector3I gridPosition, Godot.Collections.Array<Vector2I> snapPointCell, Vector2I pivot, int orientation)
+    {
+        Godot.Collections.Array<Vector3I> positionToOccupy = CalculatePositions_CustomShapes(gridPosition,snapPointCell,pivot,orientation);
         foreach (var pos in positionToOccupy)
         {
             if (placedObjects.ContainsKey(pos))

@@ -31,7 +31,15 @@ public partial class PreviewPlacement : Node
     private Godot.Collections.Array<Vector2I> rotatedOffsets = new Godot.Collections.Array<Vector2I>();
 
     [Export]
+    private Godot.Collections.Array<Vector2I> rotatedOffsetsSnapPoints = new Godot.Collections.Array<Vector2I>();
+
+    [Export]
     private Godot.Collections.Array<Node3D> indicatorPool = new Godot.Collections.Array<Node3D>();
+
+    [Export]
+
+    private Godot.Collections.Array<Node3D> snapPointPool = new Godot.Collections.Array<Node3D>();
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -51,7 +59,7 @@ public partial class PreviewPlacement : Node
         DisableCollision();
         // napisać skrypt Disable Specjalnie Dla CollisonShape3D jest w edytorze ta funkcja enable disable collision
         PreparePreview(previewObj);
-        PrepareCursor(data.occupiedCells,pivot);
+        PrepareCursor(data.occupiedCells,data.snapPointCells,pivot);
 
     }
 	private void PreparePreview(Node3D previewObj)
@@ -78,12 +86,26 @@ public partial class PreviewPlacement : Node
 		}
     }
 
-    private void PrepareCursor(Godot.Collections.Array<Vector2I> occupiedCells, Vector2I pivot)
+    private void PrepareCursor(Godot.Collections.Array<Vector2I> occupiedCells, Godot.Collections.Array<Vector2I> snapPoints, Vector2I pivot)
     {
         rotatedOffsets.Clear();
-        if (occupiedCells.Count <= 0 || occupiedCells == null)
+        rotatedOffsetsSnapPoints.Clear();
+
+        if (occupiedCells == null || occupiedCells.Count <= 0)
         {
             rotatedOffsets.Add(Vector2I.Zero);
+            rotatedOffsetsSnapPoints.Add(Vector2I.Zero);
+
+            while (indicatorPool.Count < rotatedOffsets.Count)
+            {
+                var go = cellIndicator.Instantiate<Node3D>();
+                AddChild(go);
+                go.Scale = CellSize;
+                go.Visible = true;
+                MeshInstance3D rdr = go.FindChild("MeshInstance3D", true) as MeshInstance3D;   
+                if(rdr != null) rdr.MaterialOverride = previewMaterialInstance;
+                indicatorPool.Add(go);
+            }
         }
         else
         {
@@ -92,6 +114,15 @@ public partial class PreviewPlacement : Node
                 Vector2I relative = cell - pivot;
                 Vector2I rot = RotateOffset(orientation, relative);
                 rotatedOffsets.Add(rot);
+
+            }
+
+            //To odpowiada za wizualizacje snappointow -> Wizualizacje miejsc gdzie można przyczepić / scalić dwa obiekty w jeden
+            foreach (var cell in snapPoints)
+            {
+                Vector2I relative = cell - pivot;
+                Vector2I rot = RotateOffset(orientation, relative);
+                rotatedOffsetsSnapPoints.Add(rot);
 
             }
 
@@ -106,9 +137,25 @@ public partial class PreviewPlacement : Node
                 indicatorPool.Add(go);
             }
 
+            while (snapPointPool.Count < rotatedOffsetsSnapPoints.Count)
+            {
+                var go =  cellIndicator.Instantiate<Node3D>();
+                AddChild(go);
+                go.Scale = CellSize;
+                go.Visible = true;
+                MeshInstance3D rdr = go.FindChild("MeshInstance3D", true) as MeshInstance3D;   
+                if(rdr != null) rdr.MaterialOverride = previewMaterialInstance;
+                snapPointPool.Add(go);
+            }
+
             for (int i = 0; i < indicatorPool.Count; i++)
             {
                 indicatorPool[i].Visible = true;
+            }
+
+            for (int i = 0; i < snapPointPool.Count; i++)
+            {
+                snapPointPool[i].Visible = true;
             }
         }
     }
@@ -122,8 +169,14 @@ public partial class PreviewPlacement : Node
 
         for (int i = 0; i < indicatorPool.Count; i++)
         {
-            indicatorPool[i].Visible =false ;
+            indicatorPool[i].Visible = false ;
         }
+
+        for (int i = 0; i < snapPointPool.Count; i++)
+        {
+            snapPointPool[i].Visible = false ;
+        }
+
 
     }
 
@@ -140,9 +193,20 @@ public partial class PreviewPlacement : Node
         c.A = .5f;
         var material = (StandardMaterial3D)previewMaterialInstance.Duplicate();
         material.AlbedoColor = c;
+
+        var materialSnapPoint = (StandardMaterial3D)previewMaterialInstance.Duplicate();
+        Color snpPointIndicator = Colors.Blue;
+        snpPointIndicator.A = .5f;
+        materialSnapPoint.AlbedoColor = snpPointIndicator;
+
         foreach (MeshInstance3D cell in indicatorPool)
         {   
             cell.MaterialOverride = material;
+        }
+
+        foreach (MeshInstance3D cell in snapPointPool)
+        {   
+            cell.MaterialOverride = materialSnapPoint;
         }
 
         var renderers = previewObj.FindChildren("*", "MeshInstance3D",recursive: true);
@@ -155,8 +219,22 @@ public partial class PreviewPlacement : Node
     {
         for (int i = 0; i < rotatedOffsets.Count; i++)
         {
+            if (i >= indicatorPool.Count) break; 
+
             var off = rotatedOffsets[i];
             var go = indicatorPool[i];
+            float offsetX = off.X * CellSize.X;
+            float offsetZ = off.Y * CellSize.Z;
+            go.GlobalPosition = new Vector3(pos.X + offsetX, pos.Y, pos.Z + offsetZ);
+            go.Visible = true;
+        }
+
+        for (int i = 0; i < rotatedOffsetsSnapPoints.Count; i++)
+        {
+            if (i >= snapPointPool.Count) break; 
+
+            var off = rotatedOffsetsSnapPoints[i];
+            var go = snapPointPool[i];
             float offsetX = off.X * CellSize.X;
             float offsetZ = off.Y * CellSize.Z;
             go.GlobalPosition = new Vector3(pos.X + offsetX, pos.Y, pos.Z + offsetZ);
@@ -174,7 +252,7 @@ public partial class PreviewPlacement : Node
     {
         ApplyFeedback(validity);
         /*Debug.Log("XD" + pos + data + pivot);*/
-        PrepareCursor(data.occupiedCells, pivot);
+        PrepareCursor(data.occupiedCells,data.snapPointCells, pivot);
         ApplyFeedback(validity);
         MoveCursor(pos);
         MovePreview(pos);
