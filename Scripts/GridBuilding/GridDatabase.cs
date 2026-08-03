@@ -6,13 +6,14 @@ using System.Collections.Generic;
 public partial class GridDatabase
 {
 	public Dictionary<Vector3I, PlacementData> placedObjects = new();
+
+    public Dictionary<Vector3I, List<SnapPointData>> SnapPointCells = new();
     public void AddObjectAt(
         Vector3I gridPosition,
         int ID,
         int placedObjectIndeX,
         int mainObjectIndeX,
         Godot.Collections.Array<Vector2I> occupiedCells,
-        Godot.Collections.Array<Vector2I> snapPointCells,
         Vector2I pivot, // pivot w przestrzeni lokalnej ksztaltu (2D)
         int orientation) // 0..3 (North,East,South,West)
 
@@ -32,35 +33,26 @@ public partial class GridDatabase
             Debug.Log( "IndeX objektu w tej bazie danych to : " + pos.Value.placedObjectIndeX +", a IndeX obiektu to :" + pos.Value.mainObjectIndeX);
             Debug.Log(pos.Key);
         }*/
+
+
+
+
     }
 
+
+
+    private Vector3I CalculateSinglePosition(Vector3I gridPosition, Vector2I localPos, Vector2I pivot, int orientation)
+    {
+        Vector2I relative = localPos - pivot;
+        Vector2I rotated = RotateVector(orientation, relative);
+        return gridPosition + new Vector3I(rotated.X, 0, rotated.Y);
+    }
 
     private Godot.Collections.Array<Vector3I> CalculatePositions_CustomShapes(Vector3I gridPosition, Godot.Collections.Array<Vector2I> occupiedCells, Vector2I pivot, int orientation)
     {
         
         Godot.Collections.Array<Vector3I> returnVal = new();
         foreach (var pos in occupiedCells)
-        {
-            // 1) Przesuniecie punktu wzgledem pivotu (ustawiamy pivot jako punkt odniesienia)
-         //    Dzieki temu obracamy punkt wokol pivotu, a nie wokol (0,0).
-            Vector2I relative = pos - pivot;
-            // 2) Obrot punktu RELATYWNEGO (teraz obracamy punkt wokol (0,0),
-            //    ale poniewaz wczesniej odjelismy pivot, to w rzeczywistosci
-            //    obracamy wokol pivotu).
-            Vector2I rotated = RotateVector(orientation,relative);
-             // 3) Finalna pozycja w gridzie:
-        //    pivotWorldPosition + rotated -> da nam wlasciowe miejsce kafelka po obrocie.
-            Vector3I finalPos = gridPosition + new Vector3I(rotated.X,0,rotated.Y);
-            returnVal.Add(finalPos);
-        }
-        return  returnVal;
-    }
-
-    private Godot.Collections.Array<Vector3I> CalculatePositions_CustomShapes_SnapPoints(Vector3I gridPosition, Godot.Collections.Array<Vector2I> snapPoints, Vector2I pivot, int orientation)
-    {
-        
-        Godot.Collections.Array<Vector3I> returnVal = new();
-        foreach (var pos in snapPoints)
         {
             // 1) Przesuniecie punktu wzgledem pivotu (ustawiamy pivot jako punkt odniesienia)
          //    Dzieki temu obracamy punkt wokol pivotu, a nie wokol (0,0).
@@ -107,15 +99,26 @@ public partial class GridDatabase
         return true;
     }
 
-    public bool IsAtSnapPointCell(Vector3I gridPosition, Godot.Collections.Array<Vector2I> snapPointCell, Vector2I pivot, int orientation)
+    public bool TryFindValidSnapPoint(Vector3I checkPosition, SnapType typeLookingFor, out SnapPointData validSnapPoint)
     {
-        Godot.Collections.Array<Vector3I> positionToOccupy = CalculatePositions_CustomShapes(gridPosition,snapPointCell,pivot,orientation);
-        foreach (var pos in positionToOccupy)
+        validSnapPoint = null;
+
+        // 1. Sprawdź, czy w ogóle istnieją jakieś snap pointy w tej komórce
+        if (SnapPointCells.TryGetValue(checkPosition, out List<SnapPointData> pointsInCell))
         {
-            if (placedObjects.ContainsKey(pos))
-                return false;
+            // 2. Przeszukaj listę w poszukiwaniu dopasowania
+            foreach (var point in pointsInCell)
+            {
+                // Czy ten punkt udostępnia to, czego szuka nasz obiekt?
+                // (np. Wazon szuka TableSurface, a punkt na stole oferuje TableSurface)
+                if (point.ProvidesType == typeLookingFor)
+                {
+                    validSnapPoint = point;
+                    return true;
+                }
+            }
         }
-        return true;
+        return false;
     }
 }
 
@@ -134,4 +137,32 @@ public class PlacementData
         this.placedObjectIndeX = placedObjectIndeX;
         this.mainObjectIndeX = mainObjectIndeX;
     }
+}
+
+
+public class SnapPointData
+{
+    public Vector3I position;          
+    public int ID { get; set; }
+    public int placedObjectIndex { get; set; }
+    public int mainObjectIndex { get; set; }
+    public SnapType ProvidesType { get; set; }
+    public SnapType AcceptsType { get; set; }
+
+    public SnapPointData(Vector3I position, int iD, int placedObjectIndex, int mainObjectIndex, SnapType provides, SnapType accepts)
+    {
+        this.position = position;      
+        ID = iD;
+        this.placedObjectIndex = placedObjectIndex;
+        this.mainObjectIndex = mainObjectIndex;
+        ProvidesType = provides;
+        AcceptsType = accepts;
+    }
+}
+
+public enum SnapType
+{
+    None = 0,
+    TableSurface = 1,   // Stół to udostępnia, wazon tego szuka
+    ChairSlot = 2       // Stół to udostępnia przy krawędzi, krzesło tego szuka
 }

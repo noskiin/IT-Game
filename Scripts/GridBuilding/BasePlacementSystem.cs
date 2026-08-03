@@ -73,6 +73,9 @@ public abstract partial class BasePlacementSystem : Node
         StopPlacement();
         GD.Print(ID + "Index");
         selectedObjIndex = -1;
+
+        lastDetectedPos = new Vector3I(999999, 999999, 999999);
+
         for (int i = 0; i < BuildModeSO.objectsData.Count; i++)
         {
             if (BuildModeSO.objectsData[i].ID == ID)
@@ -143,7 +146,6 @@ public abstract partial class BasePlacementSystem : Node
             placedGameObjects.Count,
             selectedObjIndex,
             objData.occupiedCells,
-            objData.snapPointCells,
             pivot,
             PreviewSystem.orientation);
             buildModeObject.SetMeta("ID",metaID);
@@ -152,7 +154,7 @@ public abstract partial class BasePlacementSystem : Node
 
 	private bool CheckPlacementValidity(Vector3I gridPos, int selectedObjIndex)
     {
-        GridDatabase selectedData = null;
+        GridDatabase selectedData = ObjectsInSceneData[1];
         foreach (var Tag in BuildModeSO.objectsData[selectedObjIndex].Tags)
         {
             selectedData = Tag == "Floor" ? ObjectsInSceneData[0] : ObjectsInSceneData[1];

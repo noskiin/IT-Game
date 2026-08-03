@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b6tl1e2ylv4ta" path="res://Objects/Desk.tscn" id="1_ty42u"]
 [ext_resource type="Script" uid="uid://bld5u74bq3bus" path="res://Scripts/BaseObject/ObjectDataResource.cs" id="2_ty42u"]
+[ext_resource type="Script" uid="uid://kbfnitg2xnq6" path="res://Scripts/BaseObject/SnapPointDefinition.cs" id="3_mdoqk"]
 
 [resource]
 script = ExtResource("2_ty42u")
@@ -9,7 +10,6 @@ Name = "Desk"
 ID = 1
 Cost = 25
 occupiedCells = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, -1)])
-snapPointCells = Array[Vector2i]([Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(-1, 1), Vector2i(-1, -1)])
 Prefab = ExtResource("1_ty42u")
 Tags = Array[String](["usable", "snapPoint"])
 metadata/_custom_type_script = "uid://bld5u74bq3bus"

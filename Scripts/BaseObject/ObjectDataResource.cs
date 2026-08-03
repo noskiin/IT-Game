@@ -16,9 +16,9 @@ public partial class ObjectDataResource : Resource
 
     [Export]
     public Godot.Collections.Array<Vector2I> occupiedCells { get; set; }
-    
+
     [Export]
-    public Godot.Collections.Array<Vector2I> snapPointCells { get; set; } 
+    public Godot.Collections.Array<Vector2I> snapPoint {get;set;} = new();
 
     public bool CustomShape;
 
@@ -30,6 +30,7 @@ public partial class ObjectDataResource : Resource
 
     [Export]
     public Godot.Collections.Array<string> Tags { get;  set; }
+
 
     
 }

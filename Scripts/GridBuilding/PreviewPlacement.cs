@@ -59,7 +59,7 @@ public partial class PreviewPlacement : Node
         DisableCollision();
         // napisać skrypt Disable Specjalnie Dla CollisonShape3D jest w edytorze ta funkcja enable disable collision
         PreparePreview(previewObj);
-        PrepareCursor(data.occupiedCells,data.snapPointCells,pivot);
+        PrepareCursor(data.occupiedCells,data.snapPoint,pivot);
 
     }
 	private void PreparePreview(Node3D previewObj)
@@ -114,15 +114,6 @@ public partial class PreviewPlacement : Node
                 Vector2I relative = cell - pivot;
                 Vector2I rot = RotateOffset(orientation, relative);
                 rotatedOffsets.Add(rot);
-
-            }
-
-            //To odpowiada za wizualizacje snappointow -> Wizualizacje miejsc gdzie można przyczepić / scalić dwa obiekty w jeden
-            foreach (var cell in snapPoints)
-            {
-                Vector2I relative = cell - pivot;
-                Vector2I rot = RotateOffset(orientation, relative);
-                rotatedOffsetsSnapPoints.Add(rot);
 
             }
 
@@ -199,46 +190,66 @@ public partial class PreviewPlacement : Node
         snpPointIndicator.A = .5f;
         materialSnapPoint.AlbedoColor = snpPointIndicator;
 
-        foreach (MeshInstance3D cell in indicatorPool)
+        foreach (Node3D cell in indicatorPool)
         {   
-            cell.MaterialOverride = material;
+            MeshInstance3D mesh = (cell as MeshInstance3D) ?? (cell.FindChild("MeshInstance3D", true) as MeshInstance3D);
+            if (mesh != null)
+            {
+                mesh.MaterialOverride = material;
+            }
         }
 
-        foreach (MeshInstance3D cell in snapPointPool)
+        foreach (Node3D cell in snapPointPool)
         {   
-            cell.MaterialOverride = materialSnapPoint;
+            MeshInstance3D mesh = (cell as MeshInstance3D) ?? (cell.FindChild("MeshInstance3D", true) as MeshInstance3D);
+            if (mesh != null)
+            {
+                mesh.MaterialOverride = materialSnapPoint;
+            }
         }
-
-        var renderers = previewObj.FindChildren("*", "MeshInstance3D",recursive: true);
-        foreach(MeshInstance3D mat in renderers)
-        {
-            mat.MaterialOverride = material;
-        }
+    
+         if (previewObj != null)
+         {
+             var renderers = previewObj.FindChildren("*", "MeshInstance3D", recursive: true);
+             foreach(MeshInstance3D mat in renderers)
+             {
+                 mat.MaterialOverride = material;
+             }
+         }
     }
     private void MoveCursor(Vector3 pos)
     {
-        for (int i = 0; i < rotatedOffsets.Count; i++)
+        for (int i = 0; i < indicatorPool.Count; i++)
         {
-            if (i >= indicatorPool.Count) break; 
-
-            var off = rotatedOffsets[i];
-            var go = indicatorPool[i];
-            float offsetX = off.X * CellSize.X;
-            float offsetZ = off.Y * CellSize.Z;
-            go.GlobalPosition = new Vector3(pos.X + offsetX, pos.Y, pos.Z + offsetZ);
-            go.Visible = true;
+            if (i < rotatedOffsets.Count)
+            {
+                var off = rotatedOffsets[i];
+                float offsetX = off.X * CellSize.X;
+                float offsetZ = off.Y * CellSize.Z;
+                indicatorPool[i].GlobalPosition = new Vector3(pos.X + offsetX, pos.Y, pos.Z + offsetZ);
+                indicatorPool[i].Visible = true;
+            }
+            else
+            {
+                // Ukrywamy nadmiarowe kafelki z puli!
+                indicatorPool[i].Visible = false;
+            }
         }
-
-        for (int i = 0; i < rotatedOffsetsSnapPoints.Count; i++)
+    
+        for (int i = 0; i < snapPointPool.Count; i++)
         {
-            if (i >= snapPointPool.Count) break; 
-
-            var off = rotatedOffsetsSnapPoints[i];
-            var go = snapPointPool[i];
-            float offsetX = off.X * CellSize.X;
-            float offsetZ = off.Y * CellSize.Z;
-            go.GlobalPosition = new Vector3(pos.X + offsetX, pos.Y, pos.Z + offsetZ);
-            go.Visible = true;
+            if (i < rotatedOffsetsSnapPoints.Count)
+            {
+                var off = rotatedOffsetsSnapPoints[i];
+                float offsetX = off.X * CellSize.X;
+                float offsetZ = off.Y * CellSize.Z;
+                snapPointPool[i].GlobalPosition = new Vector3(pos.X + offsetX, pos.Y, pos.Z + offsetZ);
+                snapPointPool[i].Visible = true;
+            }
+            else
+            {
+                snapPointPool[i].Visible = false;
+            }
         }
     }
 
@@ -252,7 +263,7 @@ public partial class PreviewPlacement : Node
     {
         ApplyFeedback(validity);
         /*Debug.Log("XD" + pos + data + pivot);*/
-        PrepareCursor(data.occupiedCells,data.snapPointCells, pivot);
+        PrepareCursor(data.occupiedCells,data.snapPoint, pivot);
         ApplyFeedback(validity);
         MoveCursor(pos);
         MovePreview(pos);
